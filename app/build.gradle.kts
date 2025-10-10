@@ -60,8 +60,6 @@ dependencies {
 
     //compose view model
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    //compose navigation
-    implementation(libs.androidx.navigation.compose)
     //serialization
     implementation(libs.kotlinx.serialization.json)
     //coroutines

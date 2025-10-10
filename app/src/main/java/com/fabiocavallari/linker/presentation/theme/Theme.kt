@@ -1,6 +1,5 @@
-package com.fabiocavallari.linker.ui.theme
+package com.fabiocavallari.linker.presentation.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

@@ -1,4 +1,4 @@
-package com.fabiocavallari.linker.ui.theme
+package com.fabiocavallari.linker.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
