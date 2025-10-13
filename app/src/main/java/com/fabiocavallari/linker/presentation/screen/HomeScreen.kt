@@ -34,6 +34,7 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
     Column(modifier = Modifier.padding(16.dp)) {
         LinkTextField(
             link = state.link,
+            isLoading = state.isTextFieldLoading,
             onTextChanged = { text ->
                 onIntent(HomeIntent.OnTextChanged(text))
             },

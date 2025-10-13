@@ -1,11 +1,15 @@
 package com.fabiocavallari.linker.presentation.component
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,8 +24,9 @@ import com.fabiocavallari.linker.presentation.state.sampleHomeScreenUiState
 @Composable
 fun LinkTextField(
     link: String = "",
+    isLoading: Boolean = false,
     onTextChanged: (String) -> Unit = {},
-    onSubmitLink: (String) -> Unit = {},
+    onSubmitLink: (String) -> Unit = {}
 ) {
     OutlinedTextField(
         value = link,
@@ -36,21 +41,32 @@ fun LinkTextField(
         shape = RoundedCornerShape(60.dp),
         maxLines = 1,
         trailingIcon = {
-            val isEnabled = link.isNotBlank()
-            IconButton(
-                onClick = { onSubmitLink(link) },
-                enabled = isEnabled,
-                modifier = Modifier
-                    .size(56.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Send,
-                    contentDescription = "Enviar",
-                    tint = if (isEnabled)
-                        MaterialTheme.colorScheme.primary
-                    else
-                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                )
+            if (isLoading) {
+                Row {
+                    CircularProgressIndicator(
+                        Modifier
+                            .size(20.dp),
+                        strokeWidth = 2.dp,
+                    )
+                    Spacer(Modifier.width(16.dp))
+                }
+            } else {
+                val isEnabled = link.isNotBlank()
+                IconButton(
+                    onClick = { onSubmitLink(link) },
+                    enabled = isEnabled,
+                    modifier = Modifier
+                        .size(56.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Send,
+                        contentDescription = "Enviar",
+                        tint = if (isEnabled)
+                            MaterialTheme.colorScheme.primary
+                        else
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                    )
+                }
             }
         },
         singleLine = true,
@@ -60,5 +76,11 @@ fun LinkTextField(
 @Preview(showBackground = true)
 @Composable
 private fun LinkTextFieldPreview() {
-    LinkTextField(sampleHomeScreenUiState.link) { }
+    LinkTextField(sampleHomeScreenUiState.link)
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LinkTextFieldLoadingPreview() {
+    LinkTextField(sampleHomeScreenUiState.link, true)
 }

@@ -7,7 +7,6 @@ import com.fabiocavallari.linker.domain.model.Resource
 import com.fabiocavallari.linker.domain.usecase.CreateAliasUseCase
 import com.fabiocavallari.linker.presentation.intent.HomeIntent
 import com.fabiocavallari.linker.presentation.state.HomeScreenUiState
-import com.fabiocavallari.linker.presentation.state.HomeState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -30,22 +29,22 @@ class HomeScreenViewModel(
 
     fun submitLink(text: String) {
         viewModelScope.launch {
+            _state.value = state.value.copy(isTextFieldLoading = true)
             val resource = createAliasUseCase.createAlias(text)
             when (resource) {
                 is Resource.Success -> {
                     addLinkToHistory(resource.data)
                 }
                 is Resource.Error -> {
-                    _state.value = state.value.copy(uiState = HomeState.ERROR)
+                    _state.value = state.value.copy(isTextFieldLoading = false)
                 }
             }
         }
     }
 
     fun addLinkToHistory(link: Alias) {
-        val historyList = state.value.historyList.toMutableList()
+        val historyList = state.value.historyList
         historyList.add(link)
-        _state.value = state.value.copy(historyList = historyList)
+        _state.value = state.value.copy(isTextFieldLoading = false, historyList = historyList)
     }
-
 }

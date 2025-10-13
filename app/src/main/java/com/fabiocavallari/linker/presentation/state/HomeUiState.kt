@@ -2,15 +2,9 @@ package com.fabiocavallari.linker.presentation.state
 
 import com.fabiocavallari.linker.domain.model.Alias
 
-enum class HomeState {
-    LOADING,
-    SUCCESS,
-    ERROR,
-}
-
 data class HomeScreenUiState(
-    val historyList: List<Alias> = emptyList(),
-    val uiState: HomeState = HomeState.SUCCESS,
+    val historyList: LinkedHashSet<Alias> = linkedSetOf(),
+    val isTextFieldLoading: Boolean = false,
     val link: String = ""
 )
 
@@ -33,6 +27,6 @@ val sampleAliasC = Alias(
 )
 
 val sampleHomeScreenUiState = HomeScreenUiState(
-    historyList = listOf(sampleAliasA, sampleAliasB, sampleAliasC),
+    historyList = linkedSetOf(sampleAliasA, sampleAliasB, sampleAliasC),
     link = "sample link",
 )
