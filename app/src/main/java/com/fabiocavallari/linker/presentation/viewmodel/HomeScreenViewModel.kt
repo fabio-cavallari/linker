@@ -15,7 +15,10 @@ class HomeScreenViewModel: ViewModel() {
     fun onIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.PostLink -> Log.d(">>>", "post link")
-            is HomeIntent.OnTextChanged -> _state.value = _state.value.copy(link = intent.text)
+            is HomeIntent.OnTextChanged -> {
+                _state.value = _state.value.copy(link = intent.text)
+                Log.d(">>>", state.value.link)
+            }
         }
     }
 
