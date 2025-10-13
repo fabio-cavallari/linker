@@ -16,12 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fabiocavallari.linker.domain.model.Alias
 import com.fabiocavallari.linker.presentation.state.sampleHomeScreenUiState
 
 @Composable
 fun HistoryList(
-    items: List<String>,
-    onItemClick: (String) -> Unit
+    items: List<Alias>,
+    onItemClick: (Alias) -> Unit
 ) {
     if (items.isEmpty()) {
         Box(
@@ -49,7 +50,7 @@ fun HistoryList(
                         .padding(vertical = 16.dp, horizontal = 16.dp)
                 ) {
                     Text(
-                        text = item,
+                        text = item.short,
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
