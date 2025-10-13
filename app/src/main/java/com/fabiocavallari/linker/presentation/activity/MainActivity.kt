@@ -1,4 +1,4 @@
-package com.fabiocavallari.linker.presentation.theme
+package com.fabiocavallari.linker.presentation.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.fabiocavallari.linker.presentation.screen.HomeScreen
+import com.fabiocavallari.linker.presentation.theme.LinkerTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LinkerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
                     Box(Modifier.Companion.padding(innerPadding)) {
                         HomeScreen()
                     }
