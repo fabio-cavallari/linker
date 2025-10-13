@@ -10,11 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fabiocavallari.linker.presentation.component.HistoryList
 import com.fabiocavallari.linker.presentation.component.LinkTextField
 import com.fabiocavallari.linker.presentation.intent.HomeIntent
 import com.fabiocavallari.linker.presentation.state.HomeScreenUiState
+import com.fabiocavallari.linker.presentation.state.sampleHomeScreenUiState
 import com.fabiocavallari.linker.presentation.viewmodel.HomeScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -44,4 +46,10 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
         Spacer(Modifier.height(16.dp))
         HistoryList(state.historyList) { }
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+private fun HomeScreenPreview() {
+    HomeScreen(sampleHomeScreenUiState, onIntent = {})
 }
