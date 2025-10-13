@@ -7,7 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface UrlShortenerClient {
-    @POST
+    @POST("alias/")
     suspend fun createAlias(
         @Body body: CreateAliasRequestDto
     ): Response<AliasDto>

@@ -1,6 +1,5 @@
 package com.fabiocavallari.linker.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fabiocavallari.linker.domain.model.Alias
@@ -22,14 +21,14 @@ class HomeScreenViewModel(
 
     fun onIntent(intent: HomeIntent) {
         when (intent) {
-            is HomeIntent.PostLink -> Log.d(">>>", "post link")
+            is HomeIntent.OnSubmitLink -> submitLink(intent.link)
             is HomeIntent.OnTextChanged -> {
-                _state.value = state.value.copy(link = intent.text)
+                _state.value = state.value.copy(link = intent.link)
             }
         }
     }
 
-    fun sendLink(text: String) {
+    fun submitLink(text: String) {
         viewModelScope.launch {
             val resource = createAliasUseCase.createAlias(text)
             when (resource) {

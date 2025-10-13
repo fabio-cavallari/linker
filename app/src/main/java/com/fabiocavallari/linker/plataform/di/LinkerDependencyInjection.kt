@@ -37,7 +37,7 @@ object LinkerDependencyInjection {
         single<UrlShortenerClient> {
             Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://url-shortener-server.onrender.com/api/alias/")
+                .baseUrl("https://url-shortener-server.onrender.com/api/")
                 .client(get())
                 .build()
                 .create(UrlShortenerClient::class.java)

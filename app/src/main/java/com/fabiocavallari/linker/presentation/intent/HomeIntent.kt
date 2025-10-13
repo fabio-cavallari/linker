@@ -1,6 +1,6 @@
 package com.fabiocavallari.linker.presentation.intent
 
 sealed class HomeIntent {
-    data object PostLink: HomeIntent()
-    data class OnTextChanged(val text: String) : HomeIntent()
+    data class OnSubmitLink(val link: String): HomeIntent()
+    data class OnTextChanged(val link: String) : HomeIntent()
 }

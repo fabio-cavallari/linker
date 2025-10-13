@@ -37,6 +37,9 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
             onTextChanged = { text ->
                 onIntent(HomeIntent.OnTextChanged(text))
             },
+            onSubmitLink = { text ->
+                onIntent(HomeIntent.OnSubmitLink(text))
+            }
         )
         Spacer(Modifier.height(16.dp))
         Text(

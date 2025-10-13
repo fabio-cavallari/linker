@@ -18,7 +18,11 @@ import androidx.compose.ui.unit.dp
 import com.fabiocavallari.linker.presentation.state.sampleHomeScreenUiState
 
 @Composable
-fun LinkTextField(link: String = "", onTextChanged: (String) -> Unit) {
+fun LinkTextField(
+    link: String = "",
+    onTextChanged: (String) -> Unit = {},
+    onSubmitLink: (String) -> Unit = {},
+) {
     OutlinedTextField(
         value = link,
         onValueChange = { newText ->
@@ -34,7 +38,7 @@ fun LinkTextField(link: String = "", onTextChanged: (String) -> Unit) {
         trailingIcon = {
             val isEnabled = link.isNotBlank()
             IconButton(
-                onClick = { },
+                onClick = { onSubmitLink(link) },
                 enabled = isEnabled,
                 modifier = Modifier
                     .size(56.dp)
@@ -56,5 +60,5 @@ fun LinkTextField(link: String = "", onTextChanged: (String) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 private fun LinkTextFieldPreview() {
-    LinkTextField(sampleHomeScreenUiState.link) {  }
+    LinkTextField(sampleHomeScreenUiState.link) { }
 }

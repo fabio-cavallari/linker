@@ -50,7 +50,7 @@ fun HistoryList(
                         .padding(vertical = 16.dp, horizontal = 16.dp)
                 ) {
                     Text(
-                        text = item.short,
+                        text = item.alias,
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
