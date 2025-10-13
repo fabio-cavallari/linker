@@ -1,13 +1,14 @@
 package com.fabiocavallari.linker.domain.model
 
-data class Link(
+data class Alias(
     val alias: String,
     val short: String,
     val original: String,
 )
 
-val sampleLink = Link(
+val sampleAlias = Alias(
     alias = "alias",
     short = "short",
     original = "original"
 )
+
