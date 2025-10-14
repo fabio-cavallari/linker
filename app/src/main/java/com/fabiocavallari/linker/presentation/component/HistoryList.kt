@@ -66,7 +66,7 @@ fun HistoryList(
 @Preview(showBackground = true)
 @Composable
 private fun HistoryListPreview() {
-    HistoryList(sampleHomeScreenUiState.historyList) { }
+    HistoryList(sampleHomeScreenUiState.historyList.toList()) { }
 }
 
 @Preview(showBackground = true)

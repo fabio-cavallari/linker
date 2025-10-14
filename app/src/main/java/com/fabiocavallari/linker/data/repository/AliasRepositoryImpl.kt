@@ -1,5 +1,6 @@
 package com.fabiocavallari.linker.data.repository
 
+import com.fabiocavallari.linker.data.model.DataError
 import com.fabiocavallari.linker.data.model.Result
 import com.fabiocavallari.linker.data.remoteprovider.UrlShortenerRemoteProvider
 import com.fabiocavallari.linker.domain.model.Alias
@@ -22,7 +23,7 @@ class AliasRepositoryImpl(
             }
 
         } catch(e: Exception) {
-            Resource.Error(message = e.message)
+            Resource.Error(error = DataError.Network.UNKNOWN, message = e.message)
         }
     }
 
