@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.fabiocavallari.linker.presentation.component.ErrorDialog
 import com.fabiocavallari.linker.presentation.component.HistoryList
-import com.fabiocavallari.linker.presentation.component.HomeEventsHandler
 import com.fabiocavallari.linker.presentation.component.LinkTextField
-import com.fabiocavallari.linker.presentation.intent.HomeAction
+import com.fabiocavallari.linker.presentation.intent.HomeIntent
 import com.fabiocavallari.linker.presentation.state.HomeScreenUiState
 import com.fabiocavallari.linker.presentation.state.sampleHomeScreenUiState
 import com.fabiocavallari.linker.presentation.viewmodel.HomeScreenViewModel
@@ -25,23 +25,25 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(viewModel: HomeScreenViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    HomeEventsHandler(viewModel.uiEvent)
+    state.dialogError?.let {
+        ErrorDialog(it) { viewModel.dismissDialog() }
+    }
     HomeScreen(state) { homeIntent ->
         viewModel.onIntent(homeIntent)
     }
 }
 
 @Composable
-fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeAction) -> Unit) {
+fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
     Column(modifier = Modifier.padding(16.dp)) {
         LinkTextField(
             link = state.link,
             isLoading = state.isTextFieldLoading,
             onTextChanged = { text ->
-                onIntent(HomeAction.OnTextChanged(text))
+                onIntent(HomeIntent.OnTextChanged(text))
             },
             onSubmitLink = { text ->
-                onIntent(HomeAction.OnSubmitLink(text))
+                onIntent(HomeIntent.OnSubmitLink(text))
             }
         )
         Spacer(Modifier.height(16.dp))

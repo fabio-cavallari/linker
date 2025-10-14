@@ -5,13 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.fabiocavallari.linker.domain.model.Alias
 import com.fabiocavallari.linker.domain.model.Resource
 import com.fabiocavallari.linker.domain.usecase.CreateAliasUseCase
-import com.fabiocavallari.linker.presentation.intent.HomeAction
-import com.fabiocavallari.linker.presentation.intent.HomeEvent
+import com.fabiocavallari.linker.presentation.intent.HomeIntent
 import com.fabiocavallari.linker.presentation.state.HomeScreenUiState
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
@@ -21,13 +18,10 @@ class HomeScreenViewModel(
         MutableStateFlow(HomeScreenUiState())
     val state: StateFlow<HomeScreenUiState> = _state
 
-    private val _uiEvent = MutableSharedFlow<HomeEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
-
-    fun onIntent(intent: HomeAction) {
+    fun onIntent(intent: HomeIntent) {
         when (intent) {
-            is HomeAction.OnSubmitLink -> submitLink(intent.link)
-            is HomeAction.OnTextChanged -> {
+            is HomeIntent.OnSubmitLink -> submitLink(intent.link)
+            is HomeIntent.OnTextChanged -> {
                 _state.value = state.value.copy(link = intent.link)
             }
         }
@@ -42,8 +36,7 @@ class HomeScreenViewModel(
                     addLinkToHistory(resource.data)
                 }
                 is Resource.Error -> {
-                    _state.value = state.value.copy(isTextFieldLoading = false)
-                    _uiEvent.emit(HomeEvent.OpenErrorDialog(resource.error))
+                    _state.value = state.value.copy(isTextFieldLoading = false, dialogError = resource.error)
                 }
             }
         }
@@ -53,5 +46,9 @@ class HomeScreenViewModel(
         val historyList = state.value.historyList
         historyList.add(link)
         _state.value = state.value.copy(isTextFieldLoading = false, historyList = historyList)
+    }
+
+    fun dismissDialog() {
+        _state.value = state.value.copy(dialogError = null)
     }
 }
