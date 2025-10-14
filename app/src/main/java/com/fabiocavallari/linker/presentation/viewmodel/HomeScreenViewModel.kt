@@ -6,8 +6,8 @@ import com.fabiocavallari.linker.data.model.DataError
 import com.fabiocavallari.linker.domain.model.Alias
 import com.fabiocavallari.linker.domain.model.Resource
 import com.fabiocavallari.linker.domain.usecase.CreateAliasUseCase
-import com.fabiocavallari.linker.presentation.intent.HomeIntent
-import com.fabiocavallari.linker.presentation.intent.HomeUiEffect
+import com.fabiocavallari.linker.presentation.intent.HomeAction
+import com.fabiocavallari.linker.presentation.intent.HomeEvent
 import com.fabiocavallari.linker.presentation.state.HomeScreenUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,13 +22,13 @@ class HomeScreenViewModel(
         MutableStateFlow(HomeScreenUiState())
     val state: StateFlow<HomeScreenUiState> = _state
 
-    private val _uiEvent = MutableSharedFlow<HomeUiEffect>()
+    private val _uiEvent = MutableSharedFlow<HomeEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    fun onIntent(intent: HomeIntent) {
+    fun onIntent(intent: HomeAction) {
         when (intent) {
-            is HomeIntent.OnSubmitLink -> submitLink(intent.link)
-            is HomeIntent.OnTextChanged -> {
+            is HomeAction.OnSubmitLink -> submitLink(intent.link)
+            is HomeAction.OnTextChanged -> {
                 _state.value = state.value.copy(link = intent.link)
             }
         }
@@ -41,11 +41,11 @@ class HomeScreenViewModel(
             when (resource) {
                 is Resource.Success -> {
                     addLinkToHistory(resource.data)
-                    _uiEvent.emit(HomeUiEffect.OnSubmitLinkError(DataError.Network.UNKNOWN))
+                    _uiEvent.emit(HomeEvent.OpenErrorDialog(DataError.Network.UNKNOWN))
                 }
                 is Resource.Error -> {
                     _state.value = state.value.copy(isTextFieldLoading = false)
-                    _uiEvent.emit(HomeUiEffect.OnSubmitLinkError(resource.error))
+                    _uiEvent.emit(HomeEvent.OpenErrorDialog(resource.error))
                 }
             }
         }
