@@ -2,7 +2,6 @@ package com.fabiocavallari.linker.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fabiocavallari.linker.data.model.DataError
 import com.fabiocavallari.linker.domain.model.Alias
 import com.fabiocavallari.linker.domain.model.Resource
 import com.fabiocavallari.linker.domain.usecase.CreateAliasUseCase
@@ -41,7 +40,6 @@ class HomeScreenViewModel(
             when (resource) {
                 is Resource.Success -> {
                     addLinkToHistory(resource.data)
-                    _uiEvent.emit(HomeEvent.OpenErrorDialog(DataError.Network.UNKNOWN))
                 }
                 is Resource.Error -> {
                     _state.value = state.value.copy(isTextFieldLoading = false)
