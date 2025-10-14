@@ -39,9 +39,8 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
         }
         state.selectedAlias?.let { alias ->
             AliasDetailDialog(
-                showTitle = state.showSelectedAliasDialogTitle,
                 alias = alias.alias,
-                original = alias.original,
+                short = alias.original,
             ) { onIntent(HomeIntent.OnDismissAliasDialog) }
         }
         LinkTextField(
@@ -60,9 +59,7 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
             style = MaterialTheme.typography.bodyLarge,
         )
         Spacer(Modifier.height(16.dp))
-        HistoryList(state.historyList.toList()) { alias ->
-            onIntent(HomeIntent.OnSelectAlias(alias, false))
-        }
+        HistoryList(state.historyList.toList())
     }
 }
 

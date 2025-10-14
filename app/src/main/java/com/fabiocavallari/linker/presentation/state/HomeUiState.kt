@@ -9,7 +9,6 @@ data class HomeScreenUiState(
     val link: String = "",
     val dialogError: Error? = null,
     val selectedAlias: Alias? = null,
-    val showSelectedAliasDialogTitle: Boolean = true,
 )
 
 val sampleAliasA = Alias(

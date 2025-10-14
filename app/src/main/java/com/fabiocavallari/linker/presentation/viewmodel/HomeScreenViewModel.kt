@@ -24,12 +24,6 @@ class HomeScreenViewModel(
             is HomeIntent.OnTextChanged -> {
                 _state.value = state.value.copy(link = intent.link)
             }
-
-            is HomeIntent.OnSelectAlias -> showSelectedAliasDialog(
-                alias = intent.alias,
-                showTitle = intent.showTitle,
-            )
-
             HomeIntent.OnDismissDialog -> dismissErrorDialog()
             HomeIntent.OnDismissAliasDialog -> dismissAliasDialog()
         }
@@ -56,6 +50,7 @@ class HomeScreenViewModel(
         val historyList = state.value.historyList
         historyList.add(link)
         _state.value = state.value.copy(
+            link = "",
             isTextFieldLoading = false,
             historyList = historyList,
             selectedAlias = link,
@@ -68,10 +63,5 @@ class HomeScreenViewModel(
 
     private fun dismissAliasDialog() {
         _state.value = state.value.copy(selectedAlias = null)
-    }
-
-    private fun showSelectedAliasDialog(alias: Alias, showTitle: Boolean) {
-        _state.value =
-            state.value.copy(selectedAlias = alias, showSelectedAliasDialogTitle = showTitle)
     }
 }
