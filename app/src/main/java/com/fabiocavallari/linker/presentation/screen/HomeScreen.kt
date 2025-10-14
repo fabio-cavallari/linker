@@ -55,7 +55,7 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
         )
         Spacer(Modifier.height(16.dp))
         Text(
-            text = "Últimos links",
+            text = "Previous Links",
             style = MaterialTheme.typography.bodyLarge,
         )
         Spacer(Modifier.height(16.dp))

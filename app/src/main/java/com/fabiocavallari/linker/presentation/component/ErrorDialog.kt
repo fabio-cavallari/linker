@@ -23,13 +23,13 @@ fun ErrorDialog(error: Error, onDismiss: () -> Unit) {
 fun getErrorMessage(error: Error): String {
     return when (error) {
         is DataError.Network -> when (error) {
-            DataError.Network.REQUEST_TIMEOUT -> "A requisição demorou demais para responder."
-            DataError.Network.BAD_REQUEST -> "Requisição inválida. Verifique os dados enviados."
-            DataError.Network.INTERNAL_SERVER_ERROR -> "Erro interno no servidor. Tente novamente mais tarde."
-            DataError.Network.EMPTY_BODY -> "Resposta inesperada do servidor (sem conteúdo)."
-            DataError.Network.NO_CONNECTION -> "Sem conexão com a internet. Verifique sua rede."
-            else -> "Ocorreu um erro desconhecido."
+            DataError.Network.REQUEST_TIMEOUT -> "The request took too long to respond."
+            DataError.Network.BAD_REQUEST -> "Invalid request. Please check the data you sent."
+            DataError.Network.INTERNAL_SERVER_ERROR -> "Internal server error. Please try again later."
+            DataError.Network.EMPTY_BODY -> "Unexpected server response."
+            DataError.Network.NO_CONNECTION -> "No internet connection. Please check your network."
+            else -> "An unknown error occurred."
         }
-        else -> "Ocorreu um erro desconhecido."
+        else -> "An unknown error occurred."
     }
 }

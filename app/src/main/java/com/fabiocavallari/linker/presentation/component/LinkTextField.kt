@@ -33,7 +33,7 @@ fun LinkTextField(
         onValueChange = { newText ->
             onTextChanged(newText)
         },
-        placeholder = { Text("Digite seu link...") },
+        placeholder = { Text("Type your link...") },
         modifier = Modifier
             .fillMaxWidth()
             .height(68.dp),
@@ -60,7 +60,7 @@ fun LinkTextField(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Send,
-                        contentDescription = "Enviar",
+                        contentDescription = "Send",
                         tint = if (isEnabled)
                             MaterialTheme.colorScheme.primary
                         else

@@ -23,17 +23,17 @@ fun AliasDetailDialog(
             TextButton(onClick = {
                 shareText(context, short)
             }) {
-                Text("Compartilhar")
+                Text("Share")
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Fechar")
+                Text("Dismiss")
             }
         },
         title = {
             Text(
-                text = "Link encurtado com sucesso",
+                text = "Link shortened successfully",
                 style = MaterialTheme.typography.titleLarge,
             )
         },

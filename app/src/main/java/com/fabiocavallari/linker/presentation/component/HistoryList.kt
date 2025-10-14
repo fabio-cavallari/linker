@@ -40,7 +40,7 @@ fun HistoryList(
             contentAlignment = Alignment.TopStart
         ) {
             Text(
-                text = "Sem links ainda...",
+                text = "No links yet...",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                 textAlign = TextAlign.Center
@@ -52,9 +52,10 @@ fun HistoryList(
             modifier = Modifier.fillMaxWidth()
         ) {
             itemsIndexed(items) { index, item ->
-                Row(Modifier
-                    .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Column(
                         modifier = Modifier
                             .weight(1f)
@@ -72,23 +73,21 @@ fun HistoryList(
                     }
                     IconButton(
                         onClick = { shareText(context, item.short) },
-                        modifier = Modifier
-                            .size(56.dp)
+                        modifier = Modifier.size(56.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Share,
-                            contentDescription = "Share",
+                            contentDescription = "Share link",
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     IconButton(
                         onClick = { openExternalLink(context, item.original) },
-                        modifier = Modifier
-                            .size(56.dp)
+                        modifier = Modifier.size(56.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Filled.PlayArrow,
-                            contentDescription = "Redirect",
+                            contentDescription = "Open link",
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -101,6 +100,7 @@ fun HistoryList(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
