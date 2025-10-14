@@ -7,7 +7,9 @@ data class HomeScreenUiState(
     val historyList: LinkedHashSet<Alias> = linkedSetOf(),
     val isTextFieldLoading: Boolean = false,
     val link: String = "",
-    val dialogError: Error? = null
+    val dialogError: Error? = null,
+    val selectedAlias: Alias? = null,
+    val showSelectedAliasDialogTitle: Boolean = true,
 )
 
 val sampleAliasA = Alias(

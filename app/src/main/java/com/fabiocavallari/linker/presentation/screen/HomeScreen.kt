@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.fabiocavallari.linker.presentation.component.AliasDetailDialog
 import com.fabiocavallari.linker.presentation.component.ErrorDialog
 import com.fabiocavallari.linker.presentation.component.HistoryList
 import com.fabiocavallari.linker.presentation.component.LinkTextField
@@ -25,9 +26,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(viewModel: HomeScreenViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    state.dialogError?.let {
-        ErrorDialog(it) { viewModel.dismissDialog() }
-    }
     HomeScreen(state) { homeIntent ->
         viewModel.onIntent(homeIntent)
     }
@@ -36,6 +34,16 @@ fun HomeScreen(viewModel: HomeScreenViewModel = koinViewModel()) {
 @Composable
 fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
     Column(modifier = Modifier.padding(16.dp)) {
+        state.dialogError?.let { error ->
+            ErrorDialog(error) { onIntent(HomeIntent.OnDismissDialog) }
+        }
+        state.selectedAlias?.let { alias ->
+            AliasDetailDialog(
+                showTitle = state.showSelectedAliasDialogTitle,
+                alias = alias.alias,
+                original = alias.original,
+            ) { onIntent(HomeIntent.OnDismissAliasDialog) }
+        }
         LinkTextField(
             link = state.link,
             isLoading = state.isTextFieldLoading,
@@ -48,11 +56,13 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
         )
         Spacer(Modifier.height(16.dp))
         Text(
-            "Últimos links",
+            text = "Últimos links",
             style = MaterialTheme.typography.bodyLarge,
         )
         Spacer(Modifier.height(16.dp))
-        HistoryList(state.historyList.toList()) { }
+        HistoryList(state.historyList.toList()) { alias ->
+            onIntent(HomeIntent.OnSelectAlias(alias, false))
+        }
     }
 }
 

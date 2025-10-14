@@ -13,17 +13,25 @@ import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
     val createAliasUseCase: CreateAliasUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _state: MutableStateFlow<HomeScreenUiState> =
         MutableStateFlow(HomeScreenUiState())
     val state: StateFlow<HomeScreenUiState> = _state
 
     fun onIntent(intent: HomeIntent) {
         when (intent) {
-            is HomeIntent.OnSubmitLink -> submitLink(intent.link)
+            is HomeIntent.OnSubmitLink -> submitLink(text = intent.link)
             is HomeIntent.OnTextChanged -> {
                 _state.value = state.value.copy(link = intent.link)
             }
+
+            is HomeIntent.OnSelectAlias -> showSelectedAliasDialog(
+                alias = intent.alias,
+                showTitle = intent.showTitle,
+            )
+
+            HomeIntent.OnDismissDialog -> dismissErrorDialog()
+            HomeIntent.OnDismissAliasDialog -> dismissAliasDialog()
         }
     }
 
@@ -33,22 +41,37 @@ class HomeScreenViewModel(
             val resource = createAliasUseCase.createAlias(text)
             when (resource) {
                 is Resource.Success -> {
-                    addLinkToHistory(resource.data)
+                    addLinkToHistory(link = resource.data)
                 }
+
                 is Resource.Error -> {
-                    _state.value = state.value.copy(isTextFieldLoading = false, dialogError = resource.error)
+                    _state.value =
+                        state.value.copy(isTextFieldLoading = false, dialogError = resource.error)
                 }
             }
         }
     }
 
-    fun addLinkToHistory(link: Alias) {
+    private fun addLinkToHistory(link: Alias) {
         val historyList = state.value.historyList
         historyList.add(link)
-        _state.value = state.value.copy(isTextFieldLoading = false, historyList = historyList)
+        _state.value = state.value.copy(
+            isTextFieldLoading = false,
+            historyList = historyList,
+            selectedAlias = link,
+        )
     }
 
-    fun dismissDialog() {
+    private fun dismissErrorDialog() {
         _state.value = state.value.copy(dialogError = null)
+    }
+
+    private fun dismissAliasDialog() {
+        _state.value = state.value.copy(selectedAlias = null)
+    }
+
+    private fun showSelectedAliasDialog(alias: Alias, showTitle: Boolean) {
+        _state.value =
+            state.value.copy(selectedAlias = alias, showSelectedAliasDialogTitle = showTitle)
     }
 }
