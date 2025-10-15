@@ -1,10 +1,9 @@
-package com.fabiocavallari.linker
+package com.fabiocavallari.linker.presentation.screen
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.fabiocavallari.linker.domain.model.Alias
-import com.fabiocavallari.linker.presentation.screen.HomeScreen
 import com.fabiocavallari.linker.presentation.state.HomeScreenUiState
 import com.fabiocavallari.linker.presentation.theme.LinkerTheme
 import org.junit.Rule
@@ -103,48 +102,6 @@ class HomeScreenTest {
         composeTestRule
             .onNodeWithText("Enter your url")
             .assertIsDisplayed()
-    }
-
-    @Test
-    fun whenUrlIsInvalid_shouldDisplayErrorMessage() {
-        // Given
-        val stateWithInvalidUrl = HomeScreenUiState(
-            link = "invalid-url",
-            isInvalidUrl = true
-        )
-
-        // When
-        composeTestRule.setContent {
-            LinkerTheme {
-                HomeScreen(state = stateWithInvalidUrl, onIntent = {})
-            }
-        }
-
-        // Then
-        composeTestRule
-            .onNodeWithText("your url is invalid")
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun whenUrlIsValid_shouldNotDisplayErrorMessage() {
-        // Given
-        val stateWithValidUrl = HomeScreenUiState(
-            link = "https://valid-url.com",
-            isInvalidUrl = false
-        )
-
-        // When
-        composeTestRule.setContent {
-            LinkerTheme {
-                HomeScreen(state = stateWithValidUrl, onIntent = {})
-            }
-        }
-
-        // Then
-        composeTestRule
-            .onNodeWithText("your url is invalid")
-            .assertDoesNotExist()
     }
 
     @Test

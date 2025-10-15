@@ -1,11 +1,10 @@
-package com.fabiocavallari.linker
+package com.fabiocavallari.linker.presentation.component
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import com.fabiocavallari.linker.domain.model.Alias
-import com.fabiocavallari.linker.presentation.component.HistoryList
 import com.fabiocavallari.linker.presentation.theme.LinkerTheme
 import org.junit.Rule
 import org.junit.Test
@@ -42,14 +41,14 @@ class HistoryListTest {
         // Given
         val items = listOf(
             Alias(
-                alias = "google",
-                short = "https://short.url/google",
-                original = "https://www.google.com"
+                alias = "aliasA",
+                short = "https://base-url/aliasA",
+                original = "https://www.aliasA.com"
             ),
             Alias(
-                alias = "github",
-                short = "https://short.url/github",
-                original = "https://www.github.com"
+                alias = "aliasB",
+                short = "https://base-url/aliasB",
+                original = "https://www.aliasB.com"
             )
         )
 
@@ -62,19 +61,19 @@ class HistoryListTest {
 
         // Then
         composeTestRule
-            .onNodeWithText("google")
+            .onNodeWithText("aliasA")
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText("github")
+            .onNodeWithText("aliasB")
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText("https://short.url/google")
+            .onNodeWithText("https://base-url/aliasA")
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText("https://short.url/github")
+            .onNodeWithText("https://base-url/aliasB")
             .assertIsDisplayed()
     }
 
@@ -84,7 +83,7 @@ class HistoryListTest {
         val items = listOf(
             Alias(
                 alias = "test",
-                short = "https://short.url/test",
+                short = "https://base-url/test",
                 original = "https://www.test.com"
             )
         )
@@ -108,7 +107,7 @@ class HistoryListTest {
         val items = listOf(
             Alias(
                 alias = "test",
-                short = "https://short.url/test",
+                short = "https://base-url/test",
                 original = "https://www.test.com"
             )
         )

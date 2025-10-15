@@ -1,4 +1,4 @@
-package com.fabiocavallari.linker
+package com.fabiocavallari.linker.presentation.component
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
@@ -8,7 +8,6 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import com.fabiocavallari.linker.presentation.component.LinkTextField
 import com.fabiocavallari.linker.presentation.theme.LinkerTheme
 import org.junit.Rule
 import org.junit.Test
@@ -53,7 +52,7 @@ class LinkTextFieldTest {
         // When
         composeTestRule.setContent {
             LinkerTheme {
-                LinkTextField(link = "https://example.com")
+                LinkTextField(link = "https://sample-url.com")
             }
         }
 
@@ -64,7 +63,7 @@ class LinkTextFieldTest {
     }
 
     @Test
-    fun whenUrlIsInvalid_shouldDisplayErrorMessage() {
+    fun whenUrlIsInvalid_shouldDisplayErrorMessageAndSendButtonIsDisabled() {
         // When
         composeTestRule.setContent {
             LinkerTheme {
@@ -79,6 +78,9 @@ class LinkTextFieldTest {
         composeTestRule
             .onNodeWithText("your url is invalid")
             .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithContentDescription("Send")
+            .assertIsNotEnabled()
     }
 
     @Test
@@ -87,7 +89,7 @@ class LinkTextFieldTest {
         composeTestRule.setContent {
             LinkerTheme {
                 LinkTextField(
-                    link = "https://valid-url.com",
+                    link = "https://sample-url.com",
                     isInvalidUrl = false
                 )
             }
@@ -105,14 +107,13 @@ class LinkTextFieldTest {
         composeTestRule.setContent {
             LinkerTheme {
                 LinkTextField(
-                    link = "https://example.com",
+                    link = "https://sample-url.com",
                     isLoading = true
                 )
             }
         }
 
-        // Then - O CircularProgressIndicator não tem content description específico,
-        // mas podemos verificar que o botão Send não está visível
+        // Then
         composeTestRule
             .onNodeWithContentDescription("Send")
             .assertDoesNotExist()
@@ -124,7 +125,7 @@ class LinkTextFieldTest {
         composeTestRule.setContent {
             LinkerTheme {
                 LinkTextField(
-                    link = "https://example.com",
+                    link = "https://sample-url.com",
                     isLoading = false
                 )
             }
@@ -134,24 +135,6 @@ class LinkTextFieldTest {
         composeTestRule
             .onNodeWithContentDescription("Send")
             .assertIsDisplayed()
-    }
-
-    @Test
-    fun whenUrlIsInvalid_sendButtonShouldBeDisabled() {
-        // When
-        composeTestRule.setContent {
-            LinkerTheme {
-                LinkTextField(
-                    link = "invalid-url",
-                    isInvalidUrl = true
-                )
-            }
-        }
-
-        // Then
-        composeTestRule
-            .onNodeWithContentDescription("Send")
-            .assertIsNotEnabled()
     }
 
     @Test
@@ -175,11 +158,11 @@ class LinkTextFieldTest {
         // When
         composeTestRule
             .onNodeWithText("Enter your url")
-            .performTextInput("https://example.com")
+            .performTextInput("https://sample-url.com")
 
         // Then
         assert(textChanged)
-        assert(capturedText == "https://example.com")
+        assert(capturedText == "https://sample-url.com")
     }
 
     @Test
@@ -191,7 +174,7 @@ class LinkTextFieldTest {
         composeTestRule.setContent {
             LinkerTheme {
                 LinkTextField(
-                    link = "https://example.com",
+                    link = "https://sample-url.com",
                     onSubmitLink = { link ->
                         submitCalled = true
                         submittedLink = link
@@ -207,6 +190,6 @@ class LinkTextFieldTest {
 
         // Then
         assert(submitCalled)
-        assert(submittedLink == "https://example.com")
+        assert(submittedLink == "https://sample-url.com")
     }
 }
