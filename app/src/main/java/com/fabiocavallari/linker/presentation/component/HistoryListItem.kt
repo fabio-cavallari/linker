@@ -67,6 +67,7 @@ fun HistoryListItem(
                 )
             }
             IconButton(
+                //should open short link, but api returns a non usable link
                 onClick = { openExternalLink(context, item.original) },
                 modifier = Modifier.size(56.dp)
             ) {
