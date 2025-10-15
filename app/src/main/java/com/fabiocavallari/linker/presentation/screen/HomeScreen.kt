@@ -40,12 +40,13 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
         state.selectedAlias?.let { alias ->
             AliasDetailDialog(
                 alias = alias.alias,
-                short = alias.original,
+                short = alias.short,
             ) { onIntent(HomeIntent.OnDismissAliasDialog) }
         }
         LinkTextField(
             link = state.link,
             isLoading = state.isTextFieldLoading,
+            isInvalidUrl = state.isInvalidUrl,
             onTextChanged = { text ->
                 onIntent(HomeIntent.OnTextChanged(text))
             },

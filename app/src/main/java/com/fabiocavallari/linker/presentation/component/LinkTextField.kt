@@ -28,6 +28,7 @@ import com.fabiocavallari.linker.presentation.state.sampleHomeScreenUiState
 fun LinkTextField(
     link: String = "",
     isLoading: Boolean = false,
+    isInvalidUrl: Boolean = false,
     onTextChanged: (String) -> Unit = {},
     onSubmitLink: (String) -> Unit = {}
 ) {
@@ -39,8 +40,15 @@ fun LinkTextField(
         placeholder = { Text("Type your link...") },
         modifier = Modifier
             .fillMaxWidth()
-            .height(68.dp),
+            .height(88.dp),
         label = { Text("Link") },
+        supportingText = {
+            if (isInvalidUrl) {
+                Text("your link is invalid")
+            } else {
+                Text("")
+            }
+        },
         shape = RoundedCornerShape(60.dp),
         maxLines = 1,
         trailingIcon = {
@@ -54,9 +62,11 @@ fun LinkTextField(
                     Spacer(Modifier.width(16.dp))
                 }
             } else {
-                val isEnabled = link.isNotBlank()
+                val isEnabled = link.isNotBlank() && !isInvalidUrl
                 IconButton(
-                    onClick = { onSubmitLink(link) },
+                    onClick = {
+                        onSubmitLink(link)
+                    },
                     enabled = isEnabled,
                     modifier = Modifier
                         .size(56.dp)
@@ -79,7 +89,6 @@ fun LinkTextField(
         keyboardActions = KeyboardActions(
             onDone = { onSubmitLink(link) }
         )
-
     )
 }
 
