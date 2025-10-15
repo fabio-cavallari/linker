@@ -75,7 +75,7 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.workmanager)
 
-//    //mockk
-//    testImplementation(libs.mockk)
-//    androidTestImplementation(libs.mockk.android)
+    //mockk
+    testImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
 }

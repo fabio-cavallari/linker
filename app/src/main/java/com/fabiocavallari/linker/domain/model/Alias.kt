@@ -5,10 +5,3 @@ data class Alias(
     val short: String,
     val original: String,
 )
-
-val sampleAlias = Alias(
-    alias = "alias",
-    short = "short",
-    original = "original"
-)
-

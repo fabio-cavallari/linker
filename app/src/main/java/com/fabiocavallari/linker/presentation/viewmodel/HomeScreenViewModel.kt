@@ -2,12 +2,12 @@ package com.fabiocavallari.linker.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fabiocavallari.linker.data.model.DataError
 import com.fabiocavallari.linker.domain.model.Alias
 import com.fabiocavallari.linker.domain.model.Resource
 import com.fabiocavallari.linker.domain.usecase.CreateAliasUseCase
 import com.fabiocavallari.linker.presentation.intent.HomeIntent
 import com.fabiocavallari.linker.presentation.state.HomeScreenUiState
-import com.fabiocavallari.linker.presentation.util.isValidUrl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -21,11 +21,7 @@ class HomeScreenViewModel(
     fun onIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.OnSubmitLink -> {
-                if (!isValidUrl(intent.link)) {
-                    _state.value = state.value.copy(isInvalidUrl = true)
-                } else {
-                    submitLink(text = intent.link)
-                }
+                submitLink(text = intent.link)
             }
             is HomeIntent.OnTextChanged -> {
                 _state.value = state.value.copy(link = intent.link, isInvalidUrl = false)
@@ -43,10 +39,15 @@ class HomeScreenViewModel(
                 is Resource.Success -> {
                     addLinkToHistory(link = resource.data)
                 }
-
                 is Resource.Error -> {
-                    _state.value =
-                        state.value.copy(isTextFieldLoading = false, dialogError = resource.error)
+                    val error = resource as Resource.Error
+                    if (error.error == DataError.Local.INVALID_URL) {
+                        _state.value =
+                            state.value.copy(isTextFieldLoading = false, isInvalidUrl = true)
+                    } else {
+                        _state.value =
+                            state.value.copy(isTextFieldLoading = false, dialogError = resource.error)
+                    }
                 }
             }
         }

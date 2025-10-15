@@ -17,6 +17,7 @@ kotlinSerializationPlugin = "2.1.21"
 kotlinxCoroutinesTest = "1.10.2"
 lifecycleViewmodelCompose = "2.9.0"
 ksp = "2.0.21-1.0.27"
+mockk = "1.13.11"
 
 
 [libraries]
@@ -44,6 +45,8 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 
 
 [plugins]

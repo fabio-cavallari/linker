@@ -8,6 +8,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.net.URL
 
 suspend fun <T> safeApiCall(
     call: suspend () -> Response<T>
@@ -40,4 +41,13 @@ fun mapHttpError(code: Int): DataError.Network = when (code) {
     500 -> DataError.Network.INTERNAL_SERVER_ERROR
     in 501..599 -> DataError.Network.SERVER_ERROR
     else -> DataError.Network.UNKNOWN
+}
+
+fun isValidUrl(url: String): Boolean {
+    return try {
+        URL(url)
+        true
+    } catch (e: Exception) {
+        false
+    }
 }
