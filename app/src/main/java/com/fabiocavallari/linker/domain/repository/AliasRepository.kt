@@ -1,4 +1,4 @@
-package com.fabiocavallari.linker.data.repository
+package com.fabiocavallari.linker.domain.repository
 
 import com.fabiocavallari.linker.domain.model.Alias
 import com.fabiocavallari.linker.domain.model.Resource

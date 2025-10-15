@@ -1,13 +1,12 @@
 package com.fabiocavallari.linker.data.repository
 
-import com.fabiocavallari.linker.data.model.DataError
-import com.fabiocavallari.linker.data.model.Result
 import com.fabiocavallari.linker.data.remoteprovider.UrlShortenerRemoteProvider
+import com.fabiocavallari.linker.domain.model.AppError
 import com.fabiocavallari.linker.domain.model.Resource
+import com.fabiocavallari.linker.domain.model.Result
 import com.fabiocavallari.linker.domain.util.asDomainModel
 import com.fabiocavallari.linker.shared.sampleAlias
 import com.fabiocavallari.linker.shared.sampleAliasDto
-import com.fabiocavallari.linker.shared.sampleInvalidUrl
 import com.fabiocavallari.linker.shared.sampleUrl
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -53,149 +52,19 @@ class AliasRepositoryImplTest {
     }
 
     @Test
-    fun `createAlias should return Error INVALID_URL when url is invalid`() = runTest {
-        // Given
-        val url = sampleInvalidUrl
-        val expectedError = DataError.Local.INVALID_URL
-
-        coEvery { remoteProvider.createAlias(url) } returns Result.Success(mockk())
-
-        // When
-        val result = repository.createAlias(url)
-
-        // Then
-        assertTrue(result is Resource.Error)
-        assertEquals(expectedError, (result as Resource.Error).error)
-        coVerify(exactly = 0) { remoteProvider.createAlias(url) }
-    }
-
-    @Test
-    fun `createAlias should return Error when remoteProvider returns Error NOT_FOUND`() = runTest {
+    fun `createAlias should return Error when remoteProvider returns AppError Data`() = runTest {
         // Given
         val url = sampleUrl
-        val networkError = DataError.Network.NOT_FOUND
+        val dataError = AppError.Data.BAD_REQUEST
 
-        coEvery { remoteProvider.createAlias(url) } returns Result.Error(networkError)
-
-        // When
-        val result = repository.createAlias(url)
-
-        // Then
-        assertTrue(result is Resource.Error)
-        assertEquals(networkError, (result as Resource.Error).error)
-        coVerify(exactly = 1) { remoteProvider.createAlias(url) }
-    }
-
-    @Test
-    fun `createAlias should return Error when remoteProvider returns Error BAD_REQUEST`() = runTest {
-        // Given
-        val url = sampleUrl
-        val networkError = DataError.Network.BAD_REQUEST
-
-        coEvery { remoteProvider.createAlias(url) } returns Result.Error(networkError)
+        coEvery { remoteProvider.createAlias(url) } returns Result.Error(dataError)
 
         // When
         val result = repository.createAlias(url)
 
         // Then
         assertTrue(result is Resource.Error)
-        assertEquals(networkError, (result as Resource.Error).error)
-    }
-
-    @Test
-    fun `createAlias should return Error when remoteProvider returns Error REQUEST_TIMEOUT`() = runTest {
-        // Given
-        val url = sampleUrl
-        val networkError = DataError.Network.REQUEST_TIMEOUT
-
-        coEvery { remoteProvider.createAlias(url) } returns Result.Error(networkError)
-
-        // When
-        val result = repository.createAlias(url)
-
-        // Then
-        assertTrue(result is Resource.Error)
-        assertEquals(networkError, (result as Resource.Error).error)
-    }
-
-    @Test
-    fun `createAlias should return Error when remoteProvider returns Error NO_CONNECTION`() = runTest {
-        // Given
-        val url = sampleUrl
-        val networkError = DataError.Network.NO_CONNECTION
-
-        coEvery { remoteProvider.createAlias(url) } returns Result.Error(networkError)
-
-        // When
-        val result = repository.createAlias(url)
-
-        // Then
-        assertTrue(result is Resource.Error)
-        assertEquals(networkError, (result as Resource.Error).error)
-    }
-
-    @Test
-    fun `createAlias should return Error when remoteProvider returns Error INTERNAL_SERVER_ERROR`() = runTest {
-        // Given
-        val url = sampleUrl
-        val networkError = DataError.Network.INTERNAL_SERVER_ERROR
-
-        coEvery { remoteProvider.createAlias(url) } returns Result.Error(networkError)
-
-        // When
-        val result = repository.createAlias(url)
-
-        // Then
-        assertTrue(result is Resource.Error)
-        assertEquals(networkError, (result as Resource.Error).error)
-    }
-
-    @Test
-    fun `createAlias should return Error when remoteProvider returns Error SERVER_ERROR`() = runTest {
-        // Given
-        val url = sampleUrl
-        val networkError = DataError.Network.SERVER_ERROR
-
-        coEvery { remoteProvider.createAlias(url) } returns Result.Error(networkError)
-
-        // When
-        val result = repository.createAlias(url)
-
-        // Then
-        assertTrue(result is Resource.Error)
-        assertEquals(networkError, (result as Resource.Error).error)
-    }
-
-    @Test
-    fun `createAlias should return Error when remoteProvider returns Error CLIENT_ERROR`() = runTest {
-        // Given
-        val url = sampleUrl
-        val networkError = DataError.Network.CLIENT_ERROR
-
-        coEvery { remoteProvider.createAlias(url) } returns Result.Error(networkError)
-
-        // When
-        val result = repository.createAlias(url)
-
-        // Then
-        assertTrue(result is Resource.Error)
-        assertEquals(networkError, (result as Resource.Error).error)
-    }
-
-    @Test
-    fun `createAlias should return Error when remoteProvider returns Error UNKNOWN`() = runTest {
-        // Given
-        val url = sampleUrl
-        val networkError = DataError.Network.UNKNOWN
-
-        coEvery { remoteProvider.createAlias(url) } returns Result.Error(networkError)
-
-        // When
-        val result = repository.createAlias(url)
-
-        // Then
-        assertTrue(result is Resource.Error)
-        assertEquals(networkError, (result as Resource.Error).error)
+        assertEquals(dataError, (result as Resource.Error).error)
     }
 
     @Test
@@ -211,7 +80,7 @@ class AliasRepositoryImplTest {
 
         // Then
         assertTrue(result is Resource.Error)
-        assertEquals(DataError.Network.UNKNOWN, (result as Resource.Error).error)
+        assertEquals(AppError.Data.UNKNOWN, (result as Resource.Error).error)
         assertEquals(exceptionMessage, result.message)
     }
 
@@ -227,7 +96,7 @@ class AliasRepositoryImplTest {
 
         // Then
         assertTrue(result is Resource.Error)
-        assertEquals(DataError.Network.UNKNOWN, (result as Resource.Error).error)
+        assertEquals(AppError.Data.UNKNOWN, (result as Resource.Error).error)
         assertEquals(null, result.message)
     }
 

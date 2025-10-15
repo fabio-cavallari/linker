@@ -1,13 +1,13 @@
 package com.fabiocavallari.linker.presentation.state
 
-import com.fabiocavallari.linker.data.model.Error
 import com.fabiocavallari.linker.domain.model.Alias
+import com.fabiocavallari.linker.domain.model.Resource
 
 data class HomeScreenUiState(
     val historyList: LinkedHashSet<Alias> = linkedSetOf(),
     val isTextFieldLoading: Boolean = false,
     val link: String = "",
-    val dialogError: Error? = null,
+    val dialogError: Resource.Error<Alias>? = null,
     val selectedAlias: Alias? = null,
     val isInvalidUrl: Boolean = false,
 )

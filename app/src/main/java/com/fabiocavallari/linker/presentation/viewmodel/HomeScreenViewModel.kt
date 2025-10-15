@@ -2,8 +2,8 @@ package com.fabiocavallari.linker.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fabiocavallari.linker.data.model.DataError
 import com.fabiocavallari.linker.domain.model.Alias
+import com.fabiocavallari.linker.domain.model.AppError
 import com.fabiocavallari.linker.domain.model.Resource
 import com.fabiocavallari.linker.domain.usecase.CreateAliasUseCase
 import com.fabiocavallari.linker.presentation.intent.HomeIntent
@@ -34,19 +34,18 @@ class HomeScreenViewModel(
     fun submitLink(text: String) {
         viewModelScope.launch {
             _state.value = state.value.copy(isTextFieldLoading = true)
-            val resource = createAliasUseCase.createAlias(text)
+            val resource = createAliasUseCase(text)
             when (resource) {
                 is Resource.Success -> {
                     addLinkToHistory(link = resource.data)
                 }
                 is Resource.Error -> {
-                    val error = resource as Resource.Error
-                    if (error.error == DataError.Local.INVALID_URL) {
+                    if (resource.error == AppError.Domain.INVALID_URL) {
                         _state.value =
                             state.value.copy(isTextFieldLoading = false, isInvalidUrl = true)
                     } else {
                         _state.value =
-                            state.value.copy(isTextFieldLoading = false, dialogError = resource.error)
+                            state.value.copy(isTextFieldLoading = false, dialogError = resource)
                     }
                 }
             }

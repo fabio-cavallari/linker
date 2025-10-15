@@ -3,8 +3,8 @@ package com.fabiocavallari.linker.data.remoteprovider
 import com.fabiocavallari.linker.data.client.UrlShortenerClient
 import com.fabiocavallari.linker.data.model.AliasDto
 import com.fabiocavallari.linker.data.model.CreateAliasRequestDto
-import com.fabiocavallari.linker.data.model.DataError
-import com.fabiocavallari.linker.data.model.Result
+import com.fabiocavallari.linker.domain.model.AppError
+import com.fabiocavallari.linker.domain.model.Result
 import com.fabiocavallari.linker.shared.sampleAliasDto
 import com.fabiocavallari.linker.shared.sampleUrl
 import io.mockk.coEvery
@@ -64,7 +64,7 @@ class UrlShortenerRemoteProviderImplTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.NOT_FOUND, (result as Result.Error).error)
+        assertEquals(AppError.Data.NOT_FOUND, (result as Result.Error).error)
         coVerify(exactly = 1) { client.createAlias(request) }
     }
 
@@ -82,7 +82,7 @@ class UrlShortenerRemoteProviderImplTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.UNKNOWN, (result as Result.Error).error)
+        assertEquals(AppError.Data.UNKNOWN, (result as Result.Error).error)
     }
 
     @Test
@@ -99,7 +99,7 @@ class UrlShortenerRemoteProviderImplTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.BAD_REQUEST, (result as Result.Error).error)
+        assertEquals(AppError.Data.BAD_REQUEST, (result as Result.Error).error)
     }
 
     @Test
@@ -116,7 +116,7 @@ class UrlShortenerRemoteProviderImplTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.INTERNAL_SERVER_ERROR, (result as Result.Error).error)
+        assertEquals(AppError.Data.INTERNAL_SERVER_ERROR, (result as Result.Error).error)
     }
 
     @Test
@@ -132,7 +132,7 @@ class UrlShortenerRemoteProviderImplTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.REQUEST_TIMEOUT, (result as Result.Error).error)
+        assertEquals(AppError.Data.REQUEST_TIMEOUT, (result as Result.Error).error)
     }
 
     @Test
@@ -148,7 +148,7 @@ class UrlShortenerRemoteProviderImplTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.NO_CONNECTION, (result as Result.Error).error)
+        assertEquals(AppError.Data.NO_CONNECTION, (result as Result.Error).error)
     }
 
     @Test
@@ -167,7 +167,7 @@ class UrlShortenerRemoteProviderImplTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.CLIENT_ERROR, (result as Result.Error).error)
+        assertEquals(AppError.Data.CLIENT_ERROR, (result as Result.Error).error)
     }
 
     @Test
@@ -183,7 +183,7 @@ class UrlShortenerRemoteProviderImplTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.UNKNOWN, (result as Result.Error).error)
+        assertEquals(AppError.Data.UNKNOWN, (result as Result.Error).error)
     }
 
     @Test

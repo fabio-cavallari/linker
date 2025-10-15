@@ -34,8 +34,8 @@ fun HomeScreen(viewModel: HomeScreenViewModel = koinViewModel()) {
 @Composable
 fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
     Column(modifier = Modifier.padding(16.dp)) {
-        state.dialogError?.let { error ->
-            ErrorDialog(error) { onIntent(HomeIntent.OnDismissDialog) }
+        state.dialogError?.let { errorResource ->
+            ErrorDialog(errorResource.error) { onIntent(HomeIntent.OnDismissDialog) }
         }
         state.selectedAlias?.let { alias ->
             AliasDetailDialog(

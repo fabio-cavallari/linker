@@ -1,14 +1,11 @@
 package com.fabiocavallari.linker.data.util
 
-import com.fabiocavallari.linker.data.model.DataError
-import com.fabiocavallari.linker.data.model.Result
-import com.fabiocavallari.linker.shared.sampleInvalidUrl
-import com.fabiocavallari.linker.shared.sampleUrl
+import com.fabiocavallari.linker.domain.model.AppError
+import com.fabiocavallari.linker.domain.model.Result
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.HttpException
@@ -42,7 +39,7 @@ class SafeApiCallTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.UNKNOWN, (result as Result.Error).error)
+        assertEquals(AppError.Data.UNKNOWN, (result as Result.Error).error)
     }
 
     @Test
@@ -55,7 +52,7 @@ class SafeApiCallTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.NOT_FOUND, (result as Result.Error).error)
+        assertEquals(AppError.Data.NOT_FOUND, (result as Result.Error).error)
     }
 
     @Test
@@ -70,7 +67,7 @@ class SafeApiCallTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.INTERNAL_SERVER_ERROR, (result as Result.Error).error)
+        assertEquals(AppError.Data.INTERNAL_SERVER_ERROR, (result as Result.Error).error)
     }
 
     @Test
@@ -83,7 +80,7 @@ class SafeApiCallTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.REQUEST_TIMEOUT, (result as Result.Error).error)
+        assertEquals(AppError.Data.REQUEST_TIMEOUT, (result as Result.Error).error)
     }
 
     @Test
@@ -96,7 +93,7 @@ class SafeApiCallTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.NO_CONNECTION, (result as Result.Error).error)
+        assertEquals(AppError.Data.NO_CONNECTION, (result as Result.Error).error)
     }
 
     @Test
@@ -109,86 +106,49 @@ class SafeApiCallTest {
 
         // Then
         assertTrue(result is Result.Error)
-        assertEquals(DataError.Network.UNKNOWN, (result as Result.Error).error)
+        assertEquals(AppError.Data.UNKNOWN, (result as Result.Error).error)
     }
 
     @Test
     fun `mapHttpError should return BAD_REQUEST for code 400`() {
-        assertEquals(DataError.Network.BAD_REQUEST, mapHttpError(400))
+        assertEquals(AppError.Data.BAD_REQUEST, mapHttpError(400))
     }
 
     @Test
     fun `mapHttpError should return NOT_FOUND for code 404`() {
-        assertEquals(DataError.Network.NOT_FOUND, mapHttpError(404))
+        assertEquals(AppError.Data.NOT_FOUND, mapHttpError(404))
     }
 
     @Test
     fun `mapHttpError should return REQUEST_TIMEOUT for code 408`() {
-        assertEquals(DataError.Network.REQUEST_TIMEOUT, mapHttpError(408))
+        assertEquals(AppError.Data.REQUEST_TIMEOUT, mapHttpError(408))
     }
 
     @Test
     fun `mapHttpError should return CLIENT_ERROR for codes 401 to 499`() {
-        assertEquals(DataError.Network.CLIENT_ERROR, mapHttpError(401))
-        assertEquals(DataError.Network.CLIENT_ERROR, mapHttpError(403))
-        assertEquals(DataError.Network.CLIENT_ERROR, mapHttpError(450))
-        assertEquals(DataError.Network.CLIENT_ERROR, mapHttpError(499))
+        assertEquals(AppError.Data.CLIENT_ERROR, mapHttpError(401))
+        assertEquals(AppError.Data.CLIENT_ERROR, mapHttpError(403))
+        assertEquals(AppError.Data.CLIENT_ERROR, mapHttpError(450))
+        assertEquals(AppError.Data.CLIENT_ERROR, mapHttpError(499))
     }
 
     @Test
     fun `mapHttpError should return INTERNAL_SERVER_ERROR for code 500`() {
-        assertEquals(DataError.Network.INTERNAL_SERVER_ERROR, mapHttpError(500))
+        assertEquals(AppError.Data.INTERNAL_SERVER_ERROR, mapHttpError(500))
     }
 
     @Test
     fun `mapHttpError should return SERVER_ERROR for codes 501 to 599`() {
-        assertEquals(DataError.Network.SERVER_ERROR, mapHttpError(501))
-        assertEquals(DataError.Network.SERVER_ERROR, mapHttpError(550))
-        assertEquals(DataError.Network.SERVER_ERROR, mapHttpError(599))
+        assertEquals(AppError.Data.SERVER_ERROR, mapHttpError(501))
+        assertEquals(AppError.Data.SERVER_ERROR, mapHttpError(550))
+        assertEquals(AppError.Data.SERVER_ERROR, mapHttpError(599))
     }
 
     @Test
     fun `mapHttpError should return UNKNOWN for unhandled codes`() {
-        assertEquals(DataError.Network.UNKNOWN, mapHttpError(600))
-        assertEquals(DataError.Network.UNKNOWN, mapHttpError(300))
-        assertEquals(DataError.Network.UNKNOWN, mapHttpError(100))
-    }
-
-    @Test
-    fun `isValidUrl should return true for valid HTTP URL`() {
-        // Given
-        val url = sampleUrl
-
-        // When
-        val result = isValidUrl(url)
-
-        // Then
-        assertTrue(result)
-    }
-
-
-    @Test
-    fun `isValidUrl should return false for empty string`() {
-        // Given
-        val url = ""
-
-        // When
-        val result = isValidUrl(url)
-
-        // Then
-        assertFalse(result)
-    }
-
-    @Test
-    fun `isValidUrl should return false for invalid URL format`() {
-        // Given
-        val url = sampleInvalidUrl
-
-        // When
-        val result = isValidUrl(url)
-
-        // Then
-        assertFalse(result)
+        assertEquals(AppError.Data.UNKNOWN, mapHttpError(600))
+        assertEquals(AppError.Data.UNKNOWN, mapHttpError(300))
+        assertEquals(AppError.Data.UNKNOWN, mapHttpError(100))
     }
 
 }

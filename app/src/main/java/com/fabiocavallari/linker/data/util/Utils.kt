@@ -1,18 +1,17 @@
 package com.fabiocavallari.linker.data.util
 
-import com.fabiocavallari.linker.data.model.DataError
-import com.fabiocavallari.linker.data.model.Result
-import com.fabiocavallari.linker.data.model.Result.Error
-import com.fabiocavallari.linker.data.model.Result.Success
+import com.fabiocavallari.linker.domain.model.AppError
+import com.fabiocavallari.linker.domain.model.Result
+import com.fabiocavallari.linker.domain.model.Result.Error
+import com.fabiocavallari.linker.domain.model.Result.Success
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException
-import java.net.URL
 
 suspend fun <T> safeApiCall(
     call: suspend () -> Response<T>
-): Result<T, DataError.Network> {
+): Result<T, AppError.Data> {
     return try {
         val response = call()
         val body = response.body()
@@ -25,29 +24,20 @@ suspend fun <T> safeApiCall(
     } catch (e: HttpException) {
         Error(mapHttpError(e.code()))
     } catch (e: SocketTimeoutException) {
-        Error(DataError.Network.REQUEST_TIMEOUT)
+        Error(AppError.Data.REQUEST_TIMEOUT)
     } catch (e: IOException) {
-        Error(DataError.Network.NO_CONNECTION)
+        Error(AppError.Data.NO_CONNECTION)
     } catch (e: Exception) {
-        Error(DataError.Network.UNKNOWN)
+        Error(AppError.Data.UNKNOWN)
     }
 }
 
-fun mapHttpError(code: Int): DataError.Network = when (code) {
-    400 -> DataError.Network.BAD_REQUEST
-    404 -> DataError.Network.NOT_FOUND
-    408 -> DataError.Network.REQUEST_TIMEOUT
-    in 401..499 -> DataError.Network.CLIENT_ERROR
-    500 -> DataError.Network.INTERNAL_SERVER_ERROR
-    in 501..599 -> DataError.Network.SERVER_ERROR
-    else -> DataError.Network.UNKNOWN
-}
-
-fun isValidUrl(url: String): Boolean {
-    return try {
-        URL(url)
-        true
-    } catch (e: Exception) {
-        false
-    }
+fun mapHttpError(code: Int): AppError.Data = when (code) {
+    400 -> AppError.Data.BAD_REQUEST
+    404 -> AppError.Data.NOT_FOUND
+    408 -> AppError.Data.REQUEST_TIMEOUT
+    in 401..499 -> AppError.Data.CLIENT_ERROR
+    500 -> AppError.Data.INTERNAL_SERVER_ERROR
+    in 501..599 -> AppError.Data.SERVER_ERROR
+    else -> AppError.Data.UNKNOWN
 }

@@ -3,9 +3,11 @@ package com.fabiocavallari.linker.plataform.di
 import com.fabiocavallari.linker.data.client.UrlShortenerClient
 import com.fabiocavallari.linker.data.remoteprovider.UrlShortenerRemoteProvider
 import com.fabiocavallari.linker.data.remoteprovider.UrlShortenerRemoteProviderImpl
-import com.fabiocavallari.linker.data.repository.AliasRepository
 import com.fabiocavallari.linker.data.repository.AliasRepositoryImpl
+import com.fabiocavallari.linker.data.util.UrlValidatorImpl
+import com.fabiocavallari.linker.domain.repository.AliasRepository
 import com.fabiocavallari.linker.domain.usecase.CreateAliasUseCase
+import com.fabiocavallari.linker.domain.util.UrlValidator
 import com.fabiocavallari.linker.presentation.viewmodel.HomeScreenViewModel
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
@@ -47,6 +49,7 @@ object LinkerDependencyInjection {
     val appModules = module {
         singleOf(::UrlShortenerRemoteProviderImpl) { bind<UrlShortenerRemoteProvider>() }
         singleOf(::AliasRepositoryImpl) { bind<AliasRepository>() }
+        singleOf(::UrlValidatorImpl) { bind<UrlValidator>() }
         factoryOf(::CreateAliasUseCase)
         viewModelOf(::HomeScreenViewModel)
     }

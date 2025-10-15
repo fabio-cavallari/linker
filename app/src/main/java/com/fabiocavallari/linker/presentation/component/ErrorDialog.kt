@@ -4,11 +4,10 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import com.fabiocavallari.linker.data.model.DataError
-import com.fabiocavallari.linker.data.model.Error
+import com.fabiocavallari.linker.domain.model.AppError
 
 @Composable
-fun ErrorDialog(error: Error, onDismiss: () -> Unit) {
+fun ErrorDialog(error: AppError, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
@@ -20,14 +19,14 @@ fun ErrorDialog(error: Error, onDismiss: () -> Unit) {
     )
 }
 
-fun getErrorMessage(error: Error): String {
+fun getErrorMessage(error: AppError): String {
     return when (error) {
-        is DataError.Network -> when (error) {
-            DataError.Network.REQUEST_TIMEOUT -> "The request took too long to respond."
-            DataError.Network.BAD_REQUEST -> "Invalid request. Please check the data you sent."
-            DataError.Network.INTERNAL_SERVER_ERROR -> "Internal server error. Please try again later."
-            DataError.Network.EMPTY_BODY -> "Unexpected server response."
-            DataError.Network.NO_CONNECTION -> "No internet connection. Please check your network."
+        is AppError.Data -> when (error) {
+            AppError.Data.REQUEST_TIMEOUT -> "The request took too long to respond."
+            AppError.Data.BAD_REQUEST -> "Invalid request. Please check the data you sent."
+            AppError.Data.INTERNAL_SERVER_ERROR -> "Internal server error. Please try again later."
+            AppError.Data.EMPTY_BODY -> "Unexpected server response."
+            AppError.Data.NO_CONNECTION -> "No internet connection. Please check your network."
             else -> "An unknown error occurred."
         }
         else -> "An unknown error occurred."

@@ -1,7 +1,7 @@
-package com.fabiocavallari.linker.data.model
+package com.fabiocavallari.linker.domain.model
 
-sealed interface DataError : Error {
-    enum class Network : DataError {
+sealed interface AppError {
+    enum class Data : AppError {
         REQUEST_TIMEOUT,
         BAD_REQUEST,
         NOT_FOUND,
@@ -13,7 +13,7 @@ sealed interface DataError : Error {
         SERVER_ERROR,
     }
 
-    enum class Local : DataError {
+    enum class Domain : AppError {
         INVALID_URL
     }
 }
