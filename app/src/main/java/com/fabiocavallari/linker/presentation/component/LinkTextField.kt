@@ -33,18 +33,18 @@ fun LinkTextField(
     onSubmitLink: (String) -> Unit = {}
 ) {
     OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(72.dp),
+        textStyle = MaterialTheme.typography.bodyLarge,
         value = link,
         onValueChange = { newText ->
             onTextChanged(newText)
         },
-        placeholder = { Text("Type your link...") },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(88.dp),
-        label = { Text("Link") },
+        placeholder = { Text("Enter your url") },
         supportingText = {
             if (isInvalidUrl) {
-                Text("your link is invalid")
+                Text("your url is invalid")
             } else {
                 Text("")
             }
@@ -69,7 +69,7 @@ fun LinkTextField(
                     },
                     enabled = isEnabled,
                     modifier = Modifier
-                        .size(56.dp)
+                        .size(24.dp)
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Send,

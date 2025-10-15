@@ -54,7 +54,7 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
                 onIntent(HomeIntent.OnSubmitLink(text))
             }
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
         Text(
             text = "Previous Links",
             style = MaterialTheme.typography.titleMedium,

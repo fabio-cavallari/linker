@@ -7,6 +7,7 @@ import com.fabiocavallari.linker.domain.model.Resource
 import com.fabiocavallari.linker.domain.usecase.CreateAliasUseCase
 import com.fabiocavallari.linker.presentation.intent.HomeIntent
 import com.fabiocavallari.linker.presentation.state.HomeScreenUiState
+import com.fabiocavallari.linker.presentation.util.isValidUrl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -14,15 +15,20 @@ import kotlinx.coroutines.launch
 class HomeScreenViewModel(
     val createAliasUseCase: CreateAliasUseCase
 ) : ViewModel() {
-    private val _state: MutableStateFlow<HomeScreenUiState> =
-        MutableStateFlow(HomeScreenUiState())
+    private val _state: MutableStateFlow<HomeScreenUiState> = MutableStateFlow(HomeScreenUiState())
     val state: StateFlow<HomeScreenUiState> = _state
 
     fun onIntent(intent: HomeIntent) {
         when (intent) {
-            is HomeIntent.OnSubmitLink -> submitLink(text = intent.link)
+            is HomeIntent.OnSubmitLink -> {
+                if (!isValidUrl(intent.link)) {
+                    _state.value = state.value.copy(isInvalidUrl = true)
+                } else {
+                    submitLink(text = intent.link)
+                }
+            }
             is HomeIntent.OnTextChanged -> {
-                _state.value = state.value.copy(link = intent.link)
+                _state.value = state.value.copy(link = intent.link, isInvalidUrl = false)
             }
             HomeIntent.OnDismissDialog -> dismissErrorDialog()
             HomeIntent.OnDismissAliasDialog -> dismissAliasDialog()
