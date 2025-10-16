@@ -253,9 +253,3 @@ fun LinkerTheme(
         content = content
     )
 }
-//
-//https://github.dev/fabio-cavallari/gym-tracker
-//
-//https://github.dev/fabio-cavallari/movieapp
-//
-//https://m3.material.io/components/text-fields/specs
