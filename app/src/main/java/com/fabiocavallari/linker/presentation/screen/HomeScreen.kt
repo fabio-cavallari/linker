@@ -12,11 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.fabiocavallari.linker.presentation.component.AliasDetailDialog
 import com.fabiocavallari.linker.presentation.component.ErrorDialog
 import com.fabiocavallari.linker.presentation.component.HistoryList
 import com.fabiocavallari.linker.presentation.component.LinkTextField
 import com.fabiocavallari.linker.presentation.intent.HomeIntent
+import com.fabiocavallari.linker.presentation.navigation.ScreenRoute
 import com.fabiocavallari.linker.presentation.state.HomeScreenUiState
 import com.fabiocavallari.linker.presentation.state.sampleHomeScreenUiState
 import com.fabiocavallari.linker.presentation.viewmodel.HomeScreenViewModel
@@ -24,10 +26,17 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun HomeScreen(viewModel: HomeScreenViewModel = koinViewModel()) {
+fun HomeScreen(viewModel: HomeScreenViewModel = koinViewModel(), navController: NavController) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     HomeScreen(state) { homeIntent ->
-        viewModel.onIntent(homeIntent)
+        when (homeIntent) {
+            is HomeIntent.OnNavigateToAliasDetail -> navController.navigate(
+                route = ScreenRoute.AliasDetailScreenRoute(
+                    alias = homeIntent.alias
+                )
+            )
+            else -> viewModel.onIntent(homeIntent)
+        }
     }
 }
 
@@ -61,7 +70,12 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(Modifier.height(8.dp))
-        HistoryList(state.historyList.toList())
+        HistoryList(
+            items = state.historyList.toList(),
+            onAliasClick = { alias ->
+                onIntent(HomeIntent.OnNavigateToAliasDetail(alias))
+            }
+        )
     }
 }
 

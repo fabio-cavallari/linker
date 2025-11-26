@@ -25,6 +25,7 @@ import com.fabiocavallari.linker.presentation.state.sampleHomeScreenUiState
 @Composable
 fun HistoryList(
     items: List<Alias>,
+    onAliasClick: (Alias) -> Unit = {}
 ) {
     if (items.isEmpty()) {
         Column(
@@ -58,7 +59,7 @@ fun HistoryList(
             modifier = Modifier.fillMaxWidth()
         ) {
             itemsIndexed(items) { index, item ->
-                HistoryListItem(item)
+                HistoryListItem(item, onAliasClick)
             }
         }
     }

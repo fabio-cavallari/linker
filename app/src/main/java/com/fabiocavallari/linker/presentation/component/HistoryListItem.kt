@@ -29,13 +29,17 @@ import com.fabiocavallari.linker.presentation.util.shareText
 
 @Composable
 fun HistoryListItem(
-    item: Alias
+    item: Alias,
+    onAliasClick: (Alias) -> Unit = {}
 ) {
     val context = LocalContext.current
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(16.dp),
+        onClick = {
+            onAliasClick(item)
+        }
     ) {
         Row(
             Modifier.fillMaxWidth(),

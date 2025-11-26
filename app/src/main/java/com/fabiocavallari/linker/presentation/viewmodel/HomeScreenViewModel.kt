@@ -18,6 +18,8 @@ class HomeScreenViewModel(
     private val _state: MutableStateFlow<HomeScreenUiState> = MutableStateFlow(HomeScreenUiState())
     val state: StateFlow<HomeScreenUiState> = _state
 
+
+
     fun onIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.OnSubmitLink -> {
@@ -28,6 +30,7 @@ class HomeScreenViewModel(
             }
             HomeIntent.OnDismissDialog -> dismissErrorDialog()
             HomeIntent.OnDismissAliasDialog -> dismissAliasDialog()
+            else -> {}
         }
     }
 

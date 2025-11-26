@@ -13,10 +13,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import com.fabiocavallari.linker.R
-import com.fabiocavallari.linker.presentation.screen.HomeScreen
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.fabiocavallari.linker.presentation.navigation.LinkerAppNavHostController
 import com.fabiocavallari.linker.presentation.theme.LinkerTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,6 +26,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navHostController = rememberNavController()
+            val currentBackStackEntry by navHostController.currentBackStackEntryAsState()
+            val currentTitle = currentBackStackEntry?.destination?.route?.let { route ->
+                when {
+                    route.contains("HomeScreenRoute") -> "Linker"
+                    route.contains("AliasDetailScreenRoute") -> "Alias Detail"
+                    else -> "Linker"
+                }
+            } ?: "Linker"
             LinkerTheme {
                 Scaffold(
                     modifier = Modifier.Companion.fillMaxSize(),
@@ -35,14 +45,12 @@ class MainActivity : ComponentActivity() {
                                 titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                             ),
                             title = {
-                                Text(
-                                    text = stringResource(id = R.string.app_name),
-                                )
+                                Text(currentTitle)
                             },
                         )
                     }) { innerPadding ->
                     Box(Modifier.Companion.padding(innerPadding)) {
-                        HomeScreen()
+                        LinkerAppNavHostController(navHostController)
                     }
                 }
             }
