@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.fabiocavallari.linker.domain.model.Alias
 import com.fabiocavallari.linker.presentation.screen.AliasDetailScreen
+import com.fabiocavallari.linker.presentation.screen.DeeplinkScreen
 import com.fabiocavallari.linker.presentation.screen.HomeScreen
 import kotlin.reflect.typeOf
 
@@ -27,6 +29,17 @@ fun LinkerAppNavHostController(navHostController: NavHostController) {
         ) { argument ->
             val aliasDetailScreenRoute = argument.toRoute<ScreenRoute.AliasDetailScreenRoute>()
             AliasDetailScreen(alias = aliasDetailScreenRoute.alias)
+        }
+        composable<ScreenRoute.DeeplinkScreen>(
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "linker://deeplink-screen/{id}"
+                }
+
+            )
+        ) { argument ->
+            val deeplinkScreenRoute = argument.toRoute<ScreenRoute.DeeplinkScreen>()
+            DeeplinkScreen(id = deeplinkScreenRoute.id)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.fabiocavallari.linker.presentation.screen
 
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -54,8 +56,9 @@ fun HomeScreen(viewModel: HomeScreenViewModel = koinViewModel(), navController: 
 @Composable
 fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.padding(16.dp),
-
+        val context = LocalContext.current
+        Column(
+            modifier = Modifier.padding(16.dp),
         ) {
             state.dialogError?.let { errorResource ->
                 ErrorDialog(errorResource.error) { onIntent(HomeIntent.OnDismissDialog) }
@@ -96,14 +99,20 @@ fun HomeScreen(state: HomeScreenUiState, onIntent: (HomeIntent) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {}
             ) {
-                Text("screen b")
+                Text("deeplink screen")
             }
         }
         FloatingActionButton(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp),
-            onClick = { Log.d(">>>", "fab click")}
+            onClick = {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("linker://deeplink-screen/1"),
+                )
+                context.startActivity(intent)
+            }
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.AirplaneTicket,

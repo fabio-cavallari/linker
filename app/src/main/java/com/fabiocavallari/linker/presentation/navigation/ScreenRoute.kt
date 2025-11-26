@@ -9,4 +9,6 @@ sealed class ScreenRoute() {
     data object HomeScreenRoute: ScreenRoute()
     @Serializable
     data class AliasDetailScreenRoute(val alias: Alias): ScreenRoute()
+    @Serializable
+    data class DeeplinkScreen(val id: Int): ScreenRoute()
 }

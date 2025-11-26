@@ -1,6 +1,7 @@
 package com.fabiocavallari.linker.presentation.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -30,9 +31,11 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(">>>", "Intent data: ${intent.data}")
         enableEdgeToEdge()
         setContent {
             val navHostController = rememberNavController()
+
             val currentBackStackEntry by navHostController.currentBackStackEntryAsState()
             val currentDestination = currentBackStackEntry?.destination
             val currentTitle = when {
@@ -55,7 +58,11 @@ class MainActivity : ComponentActivity() {
                             },
                             navigationIcon = {
                                 if (currentDestination?.hasRoute<ScreenRoute.HomeScreenRoute>() == false) {
-                                    IconButton(onClick = { navHostController.popBackStack() }) {
+                                    IconButton(onClick = {
+                                        val hasNavigated = navHostController.popBackStack()
+                                        if (!hasNavigated)
+                                            finish()
+                                    }) {
                                         Icon(
                                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                             contentDescription = "navigationBack"
