@@ -24,6 +24,7 @@ import com.fabiocavallari.linker.presentation.state.sampleHomeScreenUiState
 
 @Composable
 fun HistoryList(
+    modifier: Modifier = Modifier,
     items: List<Alias>,
     onAliasClick: (Alias) -> Unit = {}
 ) {
@@ -56,7 +57,9 @@ fun HistoryList(
         }
     } else {
         LazyColumn(
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth(),
+
+            verticalArrangement = Arrangement.Top
         ) {
             itemsIndexed(items) { index, item ->
                 HistoryListItem(item, onAliasClick)
@@ -69,11 +72,11 @@ fun HistoryList(
 @Preview(showBackground = true)
 @Composable
 private fun HistoryListPreview() {
-    HistoryList(sampleHomeScreenUiState.historyList.toList())
+    HistoryList(items = sampleHomeScreenUiState.historyList.toList())
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun HistoryListEmptyPreview() {
-    HistoryList(emptyList())
+    HistoryList(items = emptyList())
 }
